@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>00-객체생성패턴(00)_스태틱멤버패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        
+        //1. 공개 스테틱 멤버 패턴
+        
+        //함수 안에서 name 속성은 함부로 사용하면 안됨
+        //내부에서 일종의 키워드로 사용되는것 같음
+        //아래 함수명.name 으로 접근 하면 공백으로 나옴
+        var Good = function(psName){
+          this.name =  psName || 'adam';
+          this.getterNm = 'getterNm';
+        }
+        
+        Good.name = 'adam - Good.name';
+        
+        Good.getterNm = 'adam - Good.getterNm';
+        
+        Good.getName = 'adam - Good.getName';
+        
+        Good.prototype.name = 'adam - Good.prototype.name';
+        
+        var t1 = Good();
+        var t2 = new Good();
+        
+        debugger;
+        
+        
+        //2. 비공개 스테틱 멤버 패턴
+        var Garget = (function(){
+          var counter = 0;
+          
+          return function(){
+            return counter = counter +1;
+          }
+        })();
+        
+        var c1 = Garget();
+        var c2 = Garget();
+        var c3 = Garget();
+        var c4 = new Garget();
+        
+        var Garget2 = (function(){
+          var counter = 0;
+          
+          var innerFnc = function(){
+            counter = counter + 1;  
+          };
+          
+          innerFnc.prototype.getCounter = function(){
+            return counter;
+          };
+          
+          return innerFnc;
+        })();
+        
+        var gt1 = new Garget2();
+        gt1.getCounter();
+        var gt2 = new Garget2();
+        gt2.getCounter();
+        var gt3 = new Garget2();
+        alert(gt3.getCounter());
+
+        
+      };
+    </script>
+    <meta name="author" content="TOZ-2" />
+    <!-- Date: 2012-01-22 -->
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>25-코드재사용패턴(상속)(08)_프로퍼티복사패턴(믹스인)</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var mixin = function(){
+          var rtnObj = {},
+              prop,
+              voObj,
+              i,
+              vnLength;
+              
+          for(i=0, vnLength = arguments.length; i<vnLength; i++){
+            voObj = arguments[i];
+            for(prop in voObj){
+               if(voObj.hasOwnProperty(prop))
+                rtnObj[prop] = voObj[prop];
+            }
+          }
+          
+          return rtnObj;
+        };
+        
+        var xx = mixin({a : 1, b:2, c:3}, {d:4,e:5,f:6}, {g:7,h:8,i:9});
+        debugger;
+      };
+    </script>    
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-25 -->
+  </head>
+  <body></body>
+</html>

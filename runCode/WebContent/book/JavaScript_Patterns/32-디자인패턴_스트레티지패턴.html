@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>32-디자인패턴_스트레티지패턴.html</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        
+        var validator = {
+          
+          types : {},
+          
+          messages : [],
+          
+          config : {},
+          
+          validate : function(data){
+            var i, msg, type, checker, result_ok,
+                hasOwn = Object.prototype.hasOwnProperty;              
+
+            this.message = [];            
+            
+            for(i in data){
+              if(hasOwn.call(data, i)){
+                type = this.config[i];
+                checker = this.types[type];
+                
+                if(!type) continue;
+                
+                if(!checker){
+                  throw{
+                    name: 'Validator Error',
+                    message : type + ' 처리할 유효성 메서드가 없음'
+                  }
+                }
+                
+                result_ok = checker.validate(data[i]);
+                if(!result_ok){
+                  msg = i + ' 값이 유효하지 않음 ' + checker.instructions;
+                  this.message.push(msg);
+                }
+              }
+            }
+            return this.hasErrors();
+            
+          },
+          
+          hasErrors : function() {
+            return this.messages.length !== 0;
+          }
+          
+        };
+                
+        
+        validator.types.isNonEmpty = {
+          validate : function(value){
+            return value !== '';
+          },
+          instructions : '이 값은 필수 입니다.'
+        };
+        
+        validator.types.isNumber = {
+          validate : function(value){
+            return !isNaN(value);
+          },
+          instructions : '이 값은 숫자만 사용할수 있습니다..'
+        };
+        
+        validator.types.isAlphaNum = {
+          validate : function(value){
+            return !/[^a-z0-9]/gmi.test(value);
+          },
+          instructions : '특수문자를 제외한 문자와 숫자만 입력가능.'
+        };
+        
+        var data = {
+          first_name : '',
+          last_name : 'Man',
+          age : '^19',
+          user_name : 'bonja'
+        };
+        
+        validator.config ={
+          first_name : 'isNonEmpty',
+          last_name : 'isAlphaNum',
+          age : 'isNumber'          
+        }
+        
+        var rtnVal = validator.validate(data);
+      };
+    </script>
+    <meta name="author" content="johnson" />
+  </head>
+  <body></body>
+</html>

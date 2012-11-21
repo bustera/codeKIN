@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>26-코드재사용패턴(상속)(09)_메서드빌려쓰기(call_apply_bind)</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var toArray = function(){
+          var voArr = [].slice.call(arguments);
+          debugger;
+          return voArr;
+        };
+        
+        toArray(1,2,3,[4,5,6],{x:1});
+        
+        //this 키워드를 활용할 경우 의도하지 않은 동작이 발생됨
+        var one = {
+          name : 'one 2 da',
+          getName : function(){
+            return this.name;
+          }
+        };
+        
+        var two = {
+          name : 'two 2 da'          
+        }
+        
+        alert(one.getName.call(two));        
+        
+        var to = one.getName;
+        
+        //1
+        alert(to());
+        
+        var three = {
+          name : 'three 2 da',
+          method : function(callback){
+            return callback();
+          }
+        }
+        
+        //2
+        alert('three.method(one.getName) : ' + three.method(one.getName));
+        
+        //1,2 모두 say안의 this가 전역을 가르키기 때문에 비정상 작동됨
+        //메서드와 객체를 묶어놓기(바인딩) 위한 작업이 필요
+        
+        function bind(poMethod, poObject){          
+          return function(){
+            return poMethod.apply(poObject, [].slice.apply(arguments));
+          }
+        };
+
+        var test1 = bind(one.getName, two);
+        var test2 = bind(one.getName, three)
+        alert(test1());
+        alert(test2());
+        
+        Function.prototype.bind2 = function(){
+           var fn = this,
+               toArray = Array.prototype.slice;
+               args = toArray.call(arguments, 1);
+                               
+           return function(){
+             return fn.apply(arguments[0], args.concat(toArray.call(arguments)));
+           }
+        }
+        
+       var test3 = one.getName.bind(two);
+       alert(test3());
+      };
+    </script>
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-25 -->
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>33-클로저를사용하는케이스</title>
+    <meta name="author" content="tomato" />
+    <script type="text/javascript">
+      window.onload = function(){
+        function exampleClosureForm(arg1, arg2){
+            var localVar = 8;
+            function exampleReturned(innerArg){
+                return ((arg1 + arg2)/(innerArg + localVar));
+            }
+            return exampleReturned;
+        }
+         
+        var globalVar = exampleClosureForm(2, 4);
+        alert('globalVar : ' + globalVar(2));
+      
+        var secondGlobalVar = exampleClosureForm(12, 3);
+        alert('secondGlobalVar : ' + secondGlobalVar(2));
+      
+        
+        //언제 클로저를 사용하는가?
+        
+        //1. 함수를 실행하기에 앞서 함수 실행에 필요한 인자를 제공
+        //예를 들면, 웹브라우저에서 setTimeout함수의 첫번째 인자로 함수를 넘길 때
+        function callLater(paramA, paramB, paramC){
+            return (function(){
+                paramA[paramB] = paramC;
+            });
+        }
+        
+        var voDom = document.getElementById('div01');
+        var functRef = callLater(voDom.style, "display", "none");
+        setTimeout(functRef, 1000);
+        
+        //2. 함수와 객체 인스턴스 메소드 연결
+        //미래의 어떤 시점에서 실행될 함수가 알맞은 인자를 넘겨받기 위해 함수 
+        //객체에 대한 참조를 다른 변수에 할당해야 되는 경우
+        
+        function associateObjWithEvent(obj, methodName){
+          return (function(e){
+              e = e||window.event;
+              return obj[methodName](e, this);
+          });
+        };
+        
+        function DhtmlObject(elementId){
+            var el = document.getElementById(elementId);
+            if(el){
+                el.onclick = associateObjWithEvent(this, "doOnClick");
+                el.onmouseover = associateObjWithEvent(this, "doMouseOver");
+                el.onmouseout = associateObjWithEvent(this, "doMouseOut");
+            }
+        };
+        
+        DhtmlObject.prototype.doOnClick = function(event, element){
+          alert('doOnClick');
+        };
+        DhtmlObject.prototype.doMouseOver = function(event, element){
+          alert('doMouseOver');
+        };
+        DhtmlObject.prototype.doMouseOut = function(event, element){
+          alert('doMouseOut');
+        };
+        
+        new DhtmlObject('ipb01');
+        //3. 함수의 캡슐화
+        var Rectangle = function(w, h){
+          this.width = w;
+          this.height = h;
+        };
+        
+        Rectangle.prototype.getSize = function(){
+          return this.width * this.height;
+        }
+        
+        var test1 = new Rectangle(2,3);
+        alert('test1.getSize : ' + test1.getSize())
+        
+        var Rectangle2 = function(w, h){
+          this.getWidth = function(){
+            return w;
+          }
+          
+          this.getHeight = function(){
+            return h;
+          }
+        };
+        
+        Rectangle2.prototype.getSize = function(){
+          return this.getWidth() * this.getHeight();
+        }
+                
+        var test2 = new Rectangle2(2,3);
+        alert('test2.getSize : ' + test2.getSize())        
+        
+        var getImgInPositionedDivHtml = (function(){
+            var buffAr = [
+                '<div id="',
+                '',   //index 1, DIV ID attribute
+                '" style="position:absolute;top:',
+                '',   //index 3, DIV top position
+                'px;left:',
+                '',   //index 5, DIV left position
+                'px;width:',
+                '',   //index 7, DIV width
+                'px;height:',
+                '',   //index 9, DIV height
+                'px;overflow:hidden;\"><img src=\"',
+                '',   //index 11, IMG URL
+                '\" width=\"',
+                '',   //index 13, IMG width
+                '\" height=\"',
+                '',   //index 15, IMG height
+                '\" alt=\"',
+                '',   //index 17, IMG alt text
+                '\"><\/div>'
+            ];
+            return (function(url, id, width, height, top, left, altText){
+                buffAr[1] = id;
+                buffAr[3] = top;
+                buffAr[5] = left;
+                buffAr[13] = (buffAr[7] = width);
+                buffAr[15] = (buffAr[9] = height);
+                buffAr[11] = url;
+                buffAr[17] = altText;
+                return buffAr.join('');
+            });
+        })();
+        
+        //var test3 = getImgInPositionedDivHtml();
+        
+      };
+            
+    </script>
+  </head>
+  <body>
+    <div style='background-color: yellow;' id='div01'>안녕하세요</div>
+    <input type="button" value="DhtmlObjectTest- doOnclick doMouseOver doMouseOut" id='ipb01'/>
+    
+  </body>
+</html>

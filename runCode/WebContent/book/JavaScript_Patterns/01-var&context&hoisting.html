@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>var&amp;context&amp;hoisting</title>
+    <script type="text/javascript">
+    window.onload = function(){
+      var a = 1;
+      b = 2;
+      
+      (function(){
+        c = 3
+      })();
+      
+      alert('a : ' + a + '\n'
+           +'b : ' + b + '\n'
+           +'c : ' + c + '\n');
+      
+      delete a;
+      delete b;
+      delete c;
+      
+      alert('typeof(a) : ' + typeof(a) + '\n'
+           +'typeof(b) : ' + typeof(b) + '\n'
+           +'typeof(c) : ' + typeof(c) + '\n');
+      
+      //////////////////////////////////////////////////////////////////////////////////////////////
+      
+      //call By Val & call By Ref
+      function changeVal(vnVal, vaList){
+       vnVal = vnVal + 1;
+       vaList[3] = 20;
+       vnTmp = vnVal + 10; 
+      }
+      
+      var vaTamp = [1,2,3,4,5], v1=10, vnVal;
+      
+      changeVal(v1, vaTamp);
+      
+      alert('v1 : ' + v1 + '\n'
+          + 'vnVal : ' + vnVal + '\n'
+          + 'vaTamp : ' + vaTamp + '\n'
+          + 'vnTmp : ' + vnTmp);
+    
+      // //////////////////////////////////////////////////////////////////////////////////////////////
+      
+      //context
+      var global = (function(){
+        return this;
+      })();
+    
+      alert(window === global);
+      
+      var testObj = function(){
+        this.test = 1;
+        this.getThis = function(){
+          return this;
+        }
+      };
+      
+      var xx = new testObj();
+      alert('xx.getThis() === testObj : ' + (xx.getThis() === testObj));
+      alert('xx.getThis() === xx : ' + (xx.getThis() === xx));
+      alert('typeof(xx.test) : ' + typeof(xx.test));
+      
+      var yy = testObj();
+      alert(typeof(window.test));
+            
+      // //////////////////////////////////////////////////////////////////////////////////////////////
+       
+      //hoisting
+      myname = 'global';
+    
+      function func(){
+        alert(myname);
+        var myname = 'local';
+        alert(myname);
+      }
+
+      func();
+
+      function foo(){ alert('global  foo'); };
+      function bar(){ alert('global  bar'); };
+      function zoo(){ alert('global  zoo'); };
+      function koo(){ alert('global  koo'); }
+      
+      
+      function hoistMe(){
+         alert('typeof foo : ' + typeof foo + '\n'
+               + 'typeof koo : ' + typeof koo + '\n'
+               + 'typeof zoo : ' + typeof zoo + '\n'
+               + 'typeof bar : ' + typeof bar); //bar 는 호이스팅 되지만 함수는 호이스팅 되지 않음
+      
+         foo();
+         koo();
+         zoo();
+         bar();
+         soo();
+          
+         function foo(){ alert('local foo'); };
+         var bar = function() { alert('local bar'); };
+         var zoo = function zoo() { alert('local zoo'); };
+         var soo = function koo() { alert('local koo'); };
+      };
+      
+      hoistMe();
+    };
+    </script>
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-18 -->
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>11-객체생성패턴(02)_모듈패턴_호출</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var MYAPP = {};
+
+        MYAPP.namespace = function(psNameSpace) {
+          var vaNm = psNameSpace.split('.'), 
+              parent = MYAPP, 
+              i, vnLength;
+
+          if(vaNm[0] === 'MYAPP') {//좀더 좋은 방법은 없는가??
+            vaNm = vaNm.slice(1);
+          }
+
+          for( i = 0, vnLength = vaNm.length; i < vnLength; i++) {
+            if(!parent[vaNm[i]])
+              parent[vaNm[i]] = {};
+            parent = parent[vaNm[i]];
+          }
+        }
+
+        MYAPP.namespace('MYAPP.utils.array');
+        
+        MYAPP.utils.array = function(){
+          var isArray = function(){
+                          return Object.prototype.toString.call(arguments[0]) === '[object Array]';
+              },
+              i=0;
+          
+          
+          return {
+            isArray : isArray,
+            setNumner : function(){
+              i = i + 1;
+            },
+            getNumber : function(){
+              alert(i);
+            }
+          }
+        }();
+        
+        alert(MYAPP.utils.array.isArray({}))
+        MYAPP.utils.array.setNumner();
+        MYAPP.utils.array.setNumner();
+        MYAPP.utils.array.setNumner();
+        MYAPP.utils.array.getNumber();
+        
+      };
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>15-객체생성패턴(06)_객체상수패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var Constant = ( function() {
+          var constants = {}, ownProp = Object.prototype.hasOwnProperty, allow = {
+            'string' : 1,
+            'number' : 1,
+            'boolean' : 1
+          }, prefix = (Math.random() + '_').slice(2);
+
+          return {
+            set : function(psName, psValue) {
+              if(this.isDefined(psName))
+                return false;
+              if(!ownProp.call(allow, typeof psValue))
+                return false;
+
+              constants[prefix + psName] = psValue;
+              return true;
+            },
+            get : function(psName) {
+              var voRtnVal = null;
+              if(this.isDefined(psName)) {
+                voRtnVal = constants[prefix + psName];
+              }
+              return voRtnVal;
+            },
+            isDefined : function(psName) {
+              return ownProp.call(constants, prefix + psName);
+            }
+          }
+        }());
+
+        alert("Constant.isDefined('maxwidth') : " + Constant.isDefined('maxwidth'));
+
+        alert("Constant.set('maxwidth', 300) : " + Constant.set('maxwidth', 300));
+
+        alert("Constant.get('maxwidth') : " + Constant.get('maxwidth'));
+
+        alert("Constant.set('maxwidth', 300) : " + Constant.set('maxwidth', 300));
+
+        alert("Constant.get('maxwidth') : " + Constant.get('maxwidth'));
+
+      }
+    </script>
+  </head>
+  <body></body>
+</html>

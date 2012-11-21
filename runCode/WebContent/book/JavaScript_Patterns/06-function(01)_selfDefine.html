@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>08-function(03)_메모이제이션</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var scareMe = function() {
+          alert('boo!');
+          for(var i = 0; i < 100000; i++) {
+            //처음 실행할때 초기화될 엄청난 반복작업등....
+          }
+          scareMe = function() {
+            alert('DoubleBoo!');
+          }
+        }
+        scareMe();
+        scareMe();
+
+        var oneMe = function() {
+          alert('boo!');
+          for(var i = 0; i < 100000; i++) {
+            //처음 실행할때 초기화될 엄청난 반복작업등....
+          }
+          oneMe = function() {
+            alert('DoubleBoo!');
+          }
+        }
+
+        oneMe.property = 'property';
+
+        var someOther = oneMe;
+        var someThing = {
+          boo : oneMe
+        }
+
+        someOther();
+        someOther();
+        alert('someOther.property : ' + someOther.property);
+        someThing.boo();
+        someThing.boo();
+        alert('someThing.boo.property : ' + someThing.boo.property);
+
+        oneMe();
+        oneMe();
+        alert('oneMe.property : ' + oneMe.property);
+
+      }
+    </script>
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-19 -->
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>24-코드재사용패턴(상속)(07)_프로퍼티복사패턴(깊은복사)</title>
+    <script type="text/javascript">
+      window.onload = function() {
+
+        var extend = function(poParent, poChild) {
+          var i, 
+              poChild = poChild || {}, 
+              toStr = Object.prototype.toString;
+
+          for(i in poParent) {
+            if(poParent.hasOwnProperty(i)) {
+              if( typeof (poParent[i]) === 'object') {
+                 poChild[i] = (toStr.call(poParent[i]) === '[object Array]') ? [] : {};
+                 extend(poParent[i], poChild[i]);
+              } else {
+                poChild[i] = poParent[i];
+              }
+
+            }
+          }
+
+          return poChild;
+        };
+        
+        var dad = {name : 'adam'};
+        var kid = extend(dad);
+        
+        alert('kid.name : ' + kid.name);        
+        kid.name = 'hawa';                
+        alert('dad.name : ' + dad.name + '\n'+
+              'kid.name : ' + kid.name);
+              
+        var dad2 = {
+          vatest : [1,2,3],
+          votest : {name : 'adam'}
+        };
+        
+        debugger;
+        var kid2 = extend(dad2);
+        
+        alert('kid2.vatest : ' + kid2.vatest.join(','));        
+        kid2.vatest.push(4);
+        
+        alert('kid2.vatest : ' + kid2.vatest.join(',') + '\n' +
+              'dad2.vatest : ' + dad2.vatest.join(','));
+        
+        
+        /*
+        function test() {
+          this.add
+        };
+
+        var xx = new test();
+        var a = 1;
+        alert(Object.prototype.toString.call({}));
+        alert(Object.prototype.toString.call(extend));
+        alert(Object.prototype.toString.call(xx));
+        alert(Object.prototype.toString.call(a));
+        */
+      };
+
+    </script>
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-23 -->
+  </head>
+  <body></body>
+</html>

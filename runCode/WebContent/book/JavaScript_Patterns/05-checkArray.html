@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>05-checkArray</title>
+    <script type="text/javascript">
+      
+      window.onload = function(){      
+        //자바스크립트에 존재 하는 유사 배열로 인해 배열체크가 힘들기에 사용
+        var vaTest1 = [1,2];
+        var vnTest2 = Number(6);
+        alert('vaTest1.toString : ' + vaTest1.toString() + '\n' +
+              'typeof(vaTest1) : ' + typeof(vaTest1));            
+  
+        alert('vnTest2.toString : ' + vnTest2.toString() + '\n' +
+              'typeof(vnTest2) : ' + typeof(vnTest2));            
+  
+        alert(alert('typeof("") : ' + typeof("")) + '\n' + 'Object.prototype.toString() : '+ Object.prototype.toString());
+        
+        alert("document.getElementById('lbl1').toString() : " + document.getElementById('lbl1').toString() + '\n' +
+              "typeof(document.getElementById('lbl1')) : " + typeof(document.getElementById('lbl1')));
+        
+        if(Array.isArray === 'undefined'){
+          Array.isArray = function(){
+            return Object.prototype.toString.call(arguments[0]) === '[object Array]'
+          }
+        }
+        
+        alert('Array.isArray([]) : ' + Array.isArray([]));
+        alert('Array.isArray({}) : ' + Array.isArray({}));
+      };        
+    </script>
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-19 -->    
+  </head>
+  <body><label id='lbl1'>123</label></body>
+</html>

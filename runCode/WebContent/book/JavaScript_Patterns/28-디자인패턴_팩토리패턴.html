@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>28-디자인패턴_팩토리패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var CarMaker = function(){};
+        
+        CarMaker.benz = function(){
+          this.door = 'benz';
+        };
+        
+        CarMaker.tico = function(){
+          this.door = 'tico';
+        };
+        
+        CarMaker.bolbo = function(){
+          this.door = 'bolbo';
+        }
+        
+        CarMaker.prototype.drive = function(){
+          return 'I have ' + this.door + ' :D ';
+        
+        };
+        
+        CarMaker.factory = function(type){
+          var constr = type,
+              newcar = {};
+              
+          if(typeof(CarMaker[constr]) !== 'function'){
+            throw{
+              name: 'Error',
+              message : constr + "doesn't exist"
+            }
+          }
+          
+          if(typeof(CarMaker[constr].prototype.drive) !== 'function'){
+            CarMaker[constr].prototype = new CarMaker();
+            newcar[constr] = CarMaker[constr]; 
+          }
+          
+          return new newcar[constr]();
+        };
+        
+        var t1 = CarMaker.factory('tico');
+        var t2 = CarMaker.factory('bolbo');
+        var t3 = CarMaker.factory('benz');
+        
+        
+        alert(t1.drive());
+        alert(t2.drive());
+        alert(t3.drive());
+        
+      };
+    </script>
+    <meta name="author" content="johnson" />
+  </head>
+  <body></body>
+</html>

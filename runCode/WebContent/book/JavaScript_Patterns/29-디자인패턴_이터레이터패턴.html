@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>29-디자인패턴_이터레이터패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var Iterator = function(paData){
+          var vaIter = paData,
+              vnLength = vaIter.length,          
+              _next,
+              _hasNext,
+              _current,
+              _rewind,
+              index = 0;
+          
+          _next = function(){
+            var rtnObj = null;
+            if(_hasNext){
+              index = index + 1;
+              rtnObj = vaIter[index];              
+            };
+            
+            return rtnObj;
+          };
+          
+          _hasNext = function(){
+            return index < vnLength;
+          };
+          
+          _current = function(){
+            return vaIter[index];                        
+          };
+          
+          _rewind = function(){
+            index = 0;
+          };
+          
+          
+          return {
+            next : _next,
+            hasNext : _hasNext,
+            current : _current,
+            rewind : _rewind
+          };
+          
+        };
+      
+        var t1 = Iterator(['a','b','c','d','e']);
+        var t2 = Iterator(['f','g','h','i','g']);
+        
+        alert(t1.current());
+        alert(t2.current());
+        
+        alert(t1.next());
+        t1.rewind();
+        alert(t1.current());
+      
+      };
+    </script>
+    <meta name="author" content="johnson" />
+  </head>
+  <body></body>
+</html>

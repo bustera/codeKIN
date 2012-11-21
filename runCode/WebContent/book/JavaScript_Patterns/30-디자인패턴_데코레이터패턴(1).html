@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>30-디자인패턴_데코레이터패턴(1)</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var Sale = function(pnPrice){
+          this.price = pnPrice || 100;
+        };
+        
+        Sale.prototype.getPrice = function(){
+          return this.price;
+        };
+
+        Sale.prototype.decorate = function(psType){
+          var F = function(){}, 
+              overides = this.constructor.decoraters[psType],
+              i,
+              newObj,
+              hasOwn = Object.prototype.hasOwnProperty;
+          
+          F.prototype = this;
+          newObj = new F();
+          newObj.uber = F.prototype;
+          
+          for(i in overides){
+            if(hasOwn.call(overides, i)){
+              newObj[i] = overides[i];    
+            }
+          }
+          
+          return newObj;
+        };
+        
+        Sale.decoraters = {};
+        
+        Sale.decoraters.fedex = {
+          getPrice : function(){
+             return this.uber.getPrice() + ' + fedex 10% ';
+          }
+        };
+
+        Sale.decoraters.quebec = {
+          getPrice : function(){
+            return this.uber.getPrice() + ' + quebec 15% ';
+          }
+        };
+
+        Sale.decoraters.money = {
+          getPrice : function(){
+            return 'pay : ' + this.uber.getPrice();
+          }
+        };
+        
+        var t1 = new Sale(100);
+        t1 = t1.decorate('fedex');
+        t1 = t1.decorate('quebec');
+        t1 = t1.decorate('money');
+        alert(t1.getPrice());
+        
+        
+      };
+    </script>
+    <meta name="author" content="johnson" />
+  </head>
+  <body></body>
+</html>

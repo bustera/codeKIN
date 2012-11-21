@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>22-코드재사용패턴(상속)(05)_프로토타입활용패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {      
+        function object(poParam){
+          var F = function(){};
+          F.prototype = poParam;
+          return new F();
+        };
+        
+        var man = {
+          age : 19
+        };
+        
+        function Parent(){
+          this.name = 'adam';
+        }
+        
+        Parent.prototype.getName = function(){
+          return this.name;
+        }
+        
+        var fman = new Parent();
+        var t1 = object(man);
+        var t2 = object(fman);
+        
+        //console.log(t1.__proto__ === man);
+        alert(t1.age);
+        alert(t1.__proto__ === man);        
+        alert('t2.name : ' + t2.name);
+        alert('t2.getName() : ' + t2.getName());
+        
+        var t3 = object(Parent.prototype);
+        
+        
+        
+        
+      };
+    </script>    
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-23 -->
+  </head>
+  <body></body>
+</html>

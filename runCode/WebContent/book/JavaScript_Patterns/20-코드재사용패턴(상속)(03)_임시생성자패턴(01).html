@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>20-코드재사용패턴(상속)(03)_임시생성자패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        
+        var Iniherit = function(poParent, poChild){
+          var F = function(){};
+          F.prototype = poParent.prototype;
+          poChild.prototype = new F();      
+        };        
+        
+        var Parent = function(psName){
+          this.name = psName || 'adam'
+          this.fncTest = function(){
+            alert('fncTest : ' + this.name);
+          }                                               
+        };
+        
+        Parent.prototype.getName = function(){
+          return this.name;
+        };
+
+        var Child = function(psName){
+          Parent.apply(this, arguments);
+        };
+        
+        Child.prototype.aa = function(){
+            alert('Child.prototype.aa : ' + this.name);
+        };
+        
+        Child.prototype.bb = function(){
+            alert('Child.prototype.bb : ' + this.name);
+        };
+
+
+        Iniherit(Parent, Child);                        
+      
+        Child.prototype.fncTest = function(){
+            alert('Child.prototype.fncTest : ' + this.name);
+        };
+        
+        Child.prototype.fncTest2 = function(){
+            alert('Child.prototype.fncTest : ' + this.name);
+        };
+        
+        
+        debugger;
+        var t2 = new Child('hawa');        
+        //t2.aa();
+        //t2.bb();
+        
+        t2.fncTest();
+        t2.fncTest2();
+        alert(t2.getName());
+        
+        
+        
+      };
+    </script>           
+    <meta name="author" content="TOZ-2" />
+    <!-- Date: 2012-01-22 -->
+  </head>
+  <body></body>
+</html>

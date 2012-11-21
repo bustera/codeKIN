@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>12-객체생성패턴(03)_모듈패턴_생성자</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var MYAPP = {};
+
+        MYAPP.namespace = function(psNameSpace) {
+          var vaNm = psNameSpace.split('.'), parent = MYAPP, i, vnLength;
+
+          if(vaNm[0] === 'MYAPP') {//좀더 좋은 방법은 없는가??
+            vaNm = vaNm.slice(1);
+          }
+
+          for( i = 0, vnLength = vaNm.length; i < vnLength; i++) {
+            if(!parent[vaNm[i]])
+              parent[vaNm[i]] = {};
+            parent = parent[vaNm[i]];
+          }
+        }
+
+        MYAPP.namespace('MYAPP.utils.array');
+
+        MYAPP.utils.array = function() {
+          var isArray = function() {
+            return Object.prototype.toString.call(arguments[0]) === '[object Array]';
+          }, inArray = function(pArray, poTarget) {
+            for(var j = 0, vnLength = pArray.length; j < vnLength; j++) {
+              if(pArray[i] === poTarget) {
+                return i;
+              }
+            }
+          },Constr;
+          
+          /*          
+          return {
+            isArray : isArray,
+            indexof : inArray
+          }
+          */
+         
+          Constr = function(pObj){
+            this.elements = this.toArray(pObj);
+          }
+          
+          Constr.prototype = {
+            toArray : function(pObj){
+               for(var i=0, a=[], vnLength=pObj.length; i<vnLength; i++){
+                 a[i] = pObj[i];
+               };
+               
+               return a;
+            }
+          }
+          
+          return Constr; 
+        }();
+
+       
+        var test = new MYAPP.utils.array([1,2,3])
+      };
+
+    </script>
+  </head>
+  <body></body>
+</html>

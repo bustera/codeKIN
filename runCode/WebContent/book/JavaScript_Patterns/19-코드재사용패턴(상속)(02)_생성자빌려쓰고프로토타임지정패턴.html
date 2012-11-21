@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>19-코드재사용패턴(상속)(02)_생성자빌려쓰고프로토타임지정패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        
+        var Parent = function(psName){
+          this.name = psName || 'adam'
+          this.fncTest = function(){
+            alert('fncTest : ' + this.name);
+          }
+        };
+        
+        Parent.prototype.getName = function(){
+          return this.name;
+        };
+
+        var Child = function(psName){
+          Parent.apply(this, arguments);
+        };
+        
+        var Iniherit = function(poParent, poChild){
+          poChild.prototype = new poParent();
+        };
+        
+        Iniherit(Parent, Child);
+        
+        var t1 = new Child('hawa');
+        alert(t1.getName());
+        t1.fncTest();
+        
+        delete t1.name;
+        alert(t1.getName());
+        
+        
+        /////////////////////////////////////////////////////////
+        
+        function Article(){
+          this.tags = ['ps', 'css'];
+        };
+        
+        var article = new Article();
+        
+        function Blog(){};
+        Blog.prototype = article;
+        
+        var blog = new Blog();
+        
+        function StaticPage(){
+          Article.call(this);
+        }                
+        
+        var page = new StaticPage();
+                
+        alert(article.hasOwnProperty('tags'));
+        alert(blog.hasOwnProperty('tags'));
+        alert(page.hasOwnProperty('tags'));
+        
+        blog.tags.push('html');
+        page.tags.push('php');
+        alert(article.tags.join(', '));       
+                        
+      };
+    </script>        
+    <meta name="author" content="TOZ-2" />
+    <!-- Date: 2012-01-22 -->
+  </head>
+  <body></body>
+</html>

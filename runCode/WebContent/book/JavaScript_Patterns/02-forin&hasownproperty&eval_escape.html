@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>forin</title>
+    <script type="text/javascript">      
+      
+      //for in,  hasOwnProperty
+      var man = {
+        name : 'testMan01',
+        age : 18,
+        sex : '남자'
+      },
+      i;
+      
+      for(i in man){
+        if(!!man.hasOwnProperty(i)){
+          alert(i + ' : ' + man[i]);
+        }
+      };
+      
+      man.hasOwnProperty = function(){
+        return false;
+      };
+
+      for(i in man){
+        if(!!man.hasOwnProperty(i)){
+          alert(i + ' : ' + man[i]);
+        }
+      };
+      
+      for(i in man){
+        if(!!Object.prototype.hasOwnProperty.call(man, i)){
+          alert(i + ' : ' + man[i]);
+        }
+      };
+      
+      
+      //eval_escape
+      alert('typeof(un) : ' +  typeof(un) +'\n'
+           +'typeof(deux) : ' + typeof(deux) +'\n'
+           +'typeof(trois) : ' + typeof(trois));
+
+      var jsstring = 'var un = 1; alert(un);';
+      eval(jsstring);
+
+      jsstring = 'var deux = 2; alert(deux);';
+      new Function(jsstring)();
+
+      jsstring = 'var trois = 3; alert(trois);';
+    
+      (function(){
+        eval(jsstring);
+      })();
+
+      alert('typeof(un) : ' +  typeof(un) +'\n'
+          +'typeof(deux) : ' + typeof(deux) +'\n'
+          +'typeof(trois) : ' + typeof(trois));  
+
+
+      
+    </script>
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-18 -->
+  </head>
+  <body></body>
+</html>

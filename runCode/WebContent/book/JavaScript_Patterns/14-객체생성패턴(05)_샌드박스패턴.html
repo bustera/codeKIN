@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>14-객체생성패턴(05)_샌드박스패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var MYAPP = {};
+
+        MYAPP.namespace = function(psNameSpace) {
+          var vaNm = psNameSpace.split('.'), parent = MYAPP, i, vnLength;
+
+          if(vaNm[0] === 'MYAPP') {//좀더 좋은 방법은 없는가??
+            vaNm = vaNm.slice(1);
+          }
+
+          for( i = 0, vnLength = vaNm.length; i < vnLength; i++) {
+            if(!parent[vaNm[i]])
+              parent[vaNm[i]] = {};
+            parent = parent[vaNm[i]];
+          }
+        };
+
+
+         (function(global){    
+          var Sandbox = function(){
+            var args = Array.prototype.slice.call(arguments),
+                callBackFnc = args.pop(),
+                modules = (args[0] && typeof args[0] === "string") ? args : args[0],
+                i;
+                
+                if(!(this instanceof Sandbox)){
+                  return new Sandbox(modules, callBackFnc);
+                };
+                
+                if(!modules || modules === '*' || modules[0] === '*') {
+                  modules = [];
+                  for(i in Sandbox.modules){
+                    if(Sandbox.modules.hasOwnProperty(i)){
+                      modules.push(i);
+                    }
+                  }  
+                }
+                
+                /*
+                  Sandbox.modules.dom = function(box){
+                    box.getElement = $.get;
+                    box.getStyle = $.getStyle;
+                  }
+    
+                  Sandbox.modules.ajax = function(box){
+                    box.attachEvent = function(){};
+                    box.detachEvent = function(){};                
+                  }
+                 */
+                            
+                for(i=0, len = modules.length; i<len; i++){
+                  Sandbox.modules[modules[i]](this);
+                };
+                
+                callBackFnc(this);
+          }
+          Sandbox.modules = {};
+          global.Sandbox = Sandbox;
+        })(this);
+
+
+        MYAPP.namespace('MYAPP.utils.array');
+
+        MYAPP.utils.array = function() {
+          var isArray = function() {
+            return Object.prototype.toString.call(arguments[0]) === '[object Array]';
+          }, inArray = function(pArray, poTarget) {
+            for(var j = 0, vnLength = pArray.length; j < vnLength; j++) {
+              if(pArray[i] === poTarget) {
+                return i;
+              }
+            }
+          };
+          
+          return {
+            isArray : isArray,
+            inArray : inArray
+          }
+       }();
+       
+        Sandbox.modules.ajax = function(box) {
+            box.ajax = function(){alert('box.ajax')}; // $.ajax
+            box.json = function(){alert('box.json')}; // $.json
+        };
+
+        Sandbox.modules.dom = function(box) {
+            box.getElement = function(){alert('box.getElement')};        
+            box.getStyle = function(){alert('box.getStyle')};
+        };
+
+        Sandbox.modules.event = function(box) {
+            box.attachEvent = function(){alert('box.attachEvent')};        
+            box.detachEvent = function(){alert('box.detachEvent')};
+        };
+        
+        Sandbox.modules.arrayUtil = function(box){
+        	box.isArray = MYAPP.utils.array.isArray;
+        	box.inArray = MYAPP.utils.array.inArray;
+        }
+        
+        var xx = Sandbox(['ajax', 'dom', 'event', 'arrayUtil'], function(sandbox) {        
+            
+            sandbox.ajax();
+            //sandbox.getElement();
+            //sandbox.detachEvent();
+            alert(sandbox.isArray([1,2,3]));
+        });
+        
+        debugger
+
+      };
+
+    </script>
+  </head>
+  <body></body>
+</html>

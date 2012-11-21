@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>04-Object_create</title>
+    <script type="text/javascript">
+      //Object.create 가  ecmascript 5 키워드로 사용되고 이미 구현 되어 있음
+      //사용자가 정의한 아래 방법으로 코딩하면 예상치 브라우저 마다 테스트결과가
+      //다르게 나옴 그래서 메소드 명을 create2로 변경하였음 
+      /*
+      if (typeof Object.create2 != 'function') {
+        (function () {
+          var F = function () {};
+          Object.create2 = function (o) {
+            if (arguments.length > 1) { throw Error('Second argument not supported');}
+            if (o === null) { throw Error('Cannot set a null [[Prototype]]');}
+            if (typeof o != 'object') { throw TypeError('Argument must be an object');}
+            F.prototype = o;
+            F.prototype.test1 = function(){alert(1)};
+            return new F;
+          };
+        })();
+      }
+      */
+
+      if (typeof Object.create2 === 'undefined') {
+          Object.create2 = function (o) { 
+              function F() {} 
+              F.prototype = o; 
+              F.prototype.test1 = function(){alert(1)};
+              return new F(); 
+          };
+      }     
+
+         
+      var x1 = {name : 'papa'};      
+      var x2 = Object.create2(x1);
+      
+      x1.test1();
+      x2.test1();
+      
+      var parent = function(){
+        this.name = 'adam';
+      }
+      
+      parent.prototype.getName = function(){
+        return this.name
+      }
+
+      var kid1 = Object.create2(parent);  
+      kid1.test1(); //스태틱메소드로 추가된 형태임
+      alert('kid1.name :' + kid1.name);
+      alert('kid1.getName : ' + kid1.getName);
+         
+      
+      var papa = new parent();
+      var kid2 = Object.create2(papa);
+            
+      alert(kid2.name);
+      alert(kid2.getName);
+
+      
+      //함수가 new 생성자로 생성될때 함수내부에 생성되는 this는 
+      //Object.create(Parent.prototype) 형태로 예측된다.
+      
+      //alert(x2.__proto__ === x1);      
+      //alert(x.__proto__ === Object.prototype);      
+      
+      
+    </script>
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-18 -->
+  </head>
+  <body></body>
+</html>

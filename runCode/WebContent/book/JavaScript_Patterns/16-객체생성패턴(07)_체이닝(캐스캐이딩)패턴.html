@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>16-객체생성패턴(07)_체이닝(캐스캐이딩)패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        if( typeof (Function.prototype.method) !== 'function') {
+          Function.prototype.method = function(psMethodName, poFunction) {
+            this.prototype[psMethodName] = poFunction
+            return this;
+          };
+        };
+
+        var person = function(psName) {
+          this.name = psName;
+        }
+
+        person.method('getName', function() {
+          return this.name;
+        }).method('setName', function(psName) {
+          this.name = psName;
+          return this;
+        })
+        
+        // person.prototype.getName = function() {
+          // return this.name;
+        // };
+        // person.prototype.setName = function(psName) {
+          // this.name = psName;
+          // return this;
+        // };
+                
+        
+        var man1 = new person('goodMan')
+        man1.setName('2man');
+        ;
+        alert(man1.getName());
+      }
+    </script>
+  </head>
+  <body></body>
+</html>

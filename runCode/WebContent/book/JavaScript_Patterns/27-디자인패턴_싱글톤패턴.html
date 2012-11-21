@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>27-디자인패턴_싱글톤패턴</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        var Universe = function(){
+          if(typeof(Universe.instance) === 'object'){
+            return Universe.instance;
+          };
+          
+          this.startTime = 0;
+          this.bang = 'big';
+          
+          Universe.instance = this;
+          
+          //return this;         
+        };
+        
+        var t1 = new Universe();
+        var t2 = new Universe();
+        
+        alert(t1 === t2);
+        
+        var Universe2 = function(){          
+          
+          var instance = this;
+          this.startTime = 0;
+          this.bang = 'big';
+          
+          Universe2 = function(){
+            return instance;
+          }
+          //return this;         
+        };
+        
+        Universe2.prototype.zoo = true;
+        var t3 = new Universe2();
+        Universe2.prototype.boo = true;        
+        var t4 = new Universe2();
+        
+        alert('t3 === t4 : ' + (t3 === t4) + ' \n' +
+              't3.zoo : ' + t3.zoo + ' \n' + 
+              't3.boo : ' + t3.boo + ' \n' +
+              't4.zoo : ' + t4.zoo + ' \n' +
+              't4.boo : ' + t4.boo + ' \n' );
+        
+        
+        var Universe3;
+        
+        (function(){
+          var instance;
+          Universe3 = function(){
+            
+            if(instance){
+              return instance;
+            }
+            
+            instance = this;
+            this.startTime = 0;
+            this.bang = 'big';            
+         }          
+        })()
+
+        Universe3.prototype.zoo = true;
+        var t5 = new Universe3();
+        Universe3.prototype.boo = true;        
+        var t6 = new Universe3();
+
+        alert('t5 === t6 : ' + (t5 === t6) + ' \n' +
+              't5.zoo : ' + t5.zoo + ' \n' + 
+              't5.boo : ' + t5.boo + ' \n' +
+              't6.zoo : ' + t6.zoo + ' \n' +
+              't6.boo : ' + t6.boo + ' \n' );
+
+      };
+    </script>
+    <meta name="author" content="johnson" />
+    <!-- Date: 2012-01-25 -->
+  </head>
+  <body></body>
+</html>
